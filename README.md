@@ -8,7 +8,7 @@ It aims to determine the reference genomes for the PT-seq data mining,  trim PT-
 ## Dependencies and environment
 sh, python, R
 
-#### The software/tools below should be installed and added to your system’s `PATH` so that it can be invoked from the command line.
+#### The software/tools below should be installed and added to your system’s PATH so that it can be invoked from the command line.
 bbmap v35.85 https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/installation-guide/  
 fastqc v0.11.8 https://github.com/s-andrews/FastQC  
 bowtie2 v2.4.5 https://github.com/BenLangmead/bowtie2/releases  
@@ -29,7 +29,7 @@ jdk v1.8.0-101 https://www.oracle.com/java/technologies/javase/javase8-archive-d
 zlib v1.2.11 https://github.com/jrmwng/zlib-1.2.11  
 xz v5.2.3 https://github.com/tukaani-project/xz/releases  
 lzma v4.32.7 https://sourceforge.net/projects/lzma/  
-## Depending on the environment of the system, the installation time for MEME-suite can be from less than 1 hour to about 3 hours.
+#### Depending on the environment of the system, the installation time for MEME-suite can be from less than 1 hour to about 3 hours.
 
 ## Usage
 
