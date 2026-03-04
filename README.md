@@ -165,17 +165,17 @@ t=4
 
 sh seq2fasta.sh ${job} ${d} ${r} 
 
-Output: demo_top200_R2/vcf_per_OTU/*_dep${depth}r${ratio}min8.fasta
+# Output: demo_top200_R2/vcf_per_OTU/*_dep${depth}r${ratio}min8.fasta
 
 sh meme.sh ${job} ${d} ${r} ${t}
 
-Output: demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.txt and demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.html. For details of output files, see the instruction of meme-suite.
+# Output: demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.txt and demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.html. For details of output files, see the instruction of meme-suite.
 
 # summarize meme results
 
 sh summary_meme.sh ${job} ${d} ${r}
 
-Output: meme_${job}_dep${dep}r${ratio}_summary.txt. Depending on the criteria, such as numbers of sites and E-value, motifs then can be called per reference genome by the users.
+# Output: meme_${job}_dep${dep}r${ratio}_summary.txt. Depending on the criteria, such as numbers of sites and E-value, motifs then can be called per reference genome by the users.
 ```
 
 
