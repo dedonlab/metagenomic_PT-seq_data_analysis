@@ -5,7 +5,7 @@ dep=$2
 ratio=$3
 
 folder="${job}"_top200_R2/meme_dep${dep}r${ratio}
-f_sum=meme_pl${pl}_M${method}_dep${dep}r${ratio}_summary.txt
+f_sum=meme_${job}_dep${dep}r${ratio}_summary.txt
 > $f_sum
 
 for txt in $(ls "${folder}"/*_meme.txt); do
