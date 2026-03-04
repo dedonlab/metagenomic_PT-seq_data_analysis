@@ -1,11 +1,5 @@
 #!/bin/bash
-#SBATCH -N 1                       # Number of nodes. You must always set -N 1 unless you receive special instruction from the system admin
-#SBATCH -n 1                       # Number of tasks. Don't specify more than 16 unless approved by the system admin
-#SBATCH --mail-type=END            # Type of email notification- BEGIN,END,FAIL,ALL. Equivalent to the -m option in SGE
-#SBATCH --mail-user=yuanyifeng@ufl.edu # Email to which notifications will be sent. Equivalent to the -M option in SGE. You must replace [] with your email address.
-#SBATCH -t 5-00:00:00
-#SBATCH --mem=10gb
-#############################################
+
 # input columns: scaffold, pos, cov_at_pos, pileup_dep_in_R12 or pileup_dep_in_R2.
 # output columns: scaffold, pos, cov_at_pos, pileup_dep_in_R12.
 dir_fr12=$1
