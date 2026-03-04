@@ -5,12 +5,14 @@ Author: *Yifeng Yuan, Michael S. DeMott, Shane R. Byrne, and Peter C. Dedon*
 
 It aims to determine the reference genomes for the PT-seq data mining,  trim PT-seq reads and align them to the reference genomes, identify read pileups, extract sequences including 5 flanking nts at the pileup sites and identify the conserved motifs.
 
-## Dependencies and environment
+## Dependencies and environment  
 sh, python, R
 
-#### The software/tools below should be installed and added to your system’s PATH so that it can be invoked from the command line.
+#### The software/tools below should be installed and added to your system’s PATH so that it can be invoked from the command line. Specific versions are not required.  
 bbmap v35.85 https://archive.jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/installation-guide/  
 fastqc v0.11.8 https://github.com/s-andrews/FastQC  
+Kraken2 v2.1.3 https://github.com/DerrickWood/kraken2  
+Bracken v2.9 https://github.com/jenniferlu717/Bracken
 bowtie2 v2.4.5 https://github.com/BenLangmead/bowtie2/releases  
 samtools v1.19.2 https://github.com/samtools/samtools/releases/  
 bedtools v2.30.0 https://github.com/arq5x/bedtools2/releases  
@@ -41,16 +43,40 @@ lzma v4.32.7 https://sourceforge.net/projects/lzma/
 6. Modify trim.sh with ${path_to_your_bbmap}
 7. For demo data analysis, users can start with trimmed reads (\*_final.fastq) and demo reference genomes available at https://doi.org/10.6084/m9.figshare.31476859. Extract and put the folder in the work/demo folder.
 
-### 1. Trim  
-1.1 trim reads: RAM >= 50G is required. For real PT-seq dataset, we recommond thread >= 10.  
+### 1. Trim reads  
+RAM >= 50G is required. For real PT-seq dataset, we recommond thread >= 10.  
 ```
 sh trim.sh demo/demo_1.fastq demo/demo_2.fastq job_demo  
 ```  
 The output files for the next step are trimmed reads: `job_demo_R1_final.fastq` and `job_demo_R2_final.fastq`. The output files also include intermediate .fq files and QC report files.
 
 ### 2. Prepare reference genome using UHGG2 and Kraken2-Bracken  
+Map reads to UHGG2 genomes to estimate the composition of the gut microbiome. Either PT-seq reads or metagenomic sequencing reads can be used (pipeline 1 and pipeline 2 in the manuscript). Download the UHGG2 Kraken2 and Bracken database (e.g. database150mers.kmer_distrib) from https://www.ebi.ac.uk/metagenomics/genome-catalogues/human-gut-v2-0-2. Put the 'myDB' in the work/UHGG2 folder.  
+```
+# 1. kraken2
+mydb= path to myDB, e.g. work/UHGG2/myDB  
+dir_w= work directory, e.g. work
+t=number of threads
 
+k_report=work/UHGG2/demo_kraken.report  
+k_file=work/UHGG2/demo_kraken.kraken  
+read1=work/demo/demo_R1_final.fastq  
+read2=work/demo/demo_R2_final.fastq  
 
+kraken2 --use-names --paired --threads $t --db $mydb --report $k_report $read1 $read2 > ${k_file}  
+
+# 2. Bracken  
+READ_LEN=150  
+KMER_LEN=35  
+THREADS= number of threads  
+
+cd ${myDB}  
+BRACKEN_OUTPUT_FILE=work/UHGG2/demo.bracken  
+python path_to_Bracken/Bracken-master/src/est_abundance.py -i ${k_report} -k database${READ_LEN}mers.kmer_distrib -o ${BRACKEN_OUTPUT_FILE}
+```
+
+### 3. Align PTseq reads to the reference genomes
+We used the most abundant 200 genomes estimated by Kraken2-Bracken as the reference genomes of the gut microbiome for the sample.
 
 2\) map reads to genome, identify pileups and extract sequences at pileup site with 6 flanking nt.
     input: reference genome, trimmed reads, job name
