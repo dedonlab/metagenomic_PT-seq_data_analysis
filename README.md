@@ -35,10 +35,11 @@ lzma v4.32.7 https://sourceforge.net/projects/lzma/
 
 ### 0. Prepare  
 1. Install the dependences
-2. Download the scripts and the demo dataset. Place them in the work directory, e.g. work.
-3. Keep the demo dataset in work/demo/
-4. (Optional) To deplete human sequence contamination, please download the hg19_main_mask_ribo_animal_allplant_allfungus.fa.gz file at https://zenodo.org/records/1208052 and place it in the work/demo folder with the demo reads.
-5. Modify trim.sh with ${path_to_your_bbmap}
+2. Download the scripts. Place them in the work directory, e.g. work.
+4. Keep the demo dataset in work/demo/
+5. To deplete human sequence contamination, please download the hg19_main_mask_ribo_animal_allplant_allfungus.fa.gz file at https://zenodo.org/records/1208052 and place it in the work/demo folder with the demo reads.
+6. Modify trim.sh with ${path_to_your_bbmap}
+7. For demo data analysis, users can start with trimmed reads (\*_final.fastq) and demo reference genomes available at https://doi.org/10.6084/m9.figshare.31476859. Extract and put the folder in the work/demo folder.
 
 ### 1. Trim  
 1.1 trim reads: RAM >= 50G is required. For real PT-seq dataset, we recommond thread >= 10.  
@@ -46,6 +47,10 @@ lzma v4.32.7 https://sourceforge.net/projects/lzma/
 sh trim.sh demo/demo_1.fastq demo/demo_2.fastq job_demo  
 ```  
 The output files for the next step are trimmed reads: `job_demo_R1_final.fastq` and `job_demo_R2_final.fastq`. The output files also include intermediate .fq files and QC report files.
+
+### 2. Prepare reference genome using UHGG2 and Kraken2-Bracken  
+
+
 
 2\) map reads to genome, identify pileups and extract sequences at pileup site with 6 flanking nt.
     input: reference genome, trimmed reads, job name
