@@ -47,7 +47,38 @@ sh trim.sh demo/demo_1.fastq demo/demo_2.fastq job_demo
 ```  
 The output files for the next step are trimmed reads: `job_demo_R1_final.fastq` and `job_demo_R2_final.fastq`. The output files also include intermediate .fq files and QC report files.
 
+2\) map reads to genome, identify pileups and extract sequences at pileup site with 6 flanking nt.
+    input: reference genome, trimmed reads, job name
+   
+   <pre><code>sh main.sh demo/UYXE01.1.fsa demo/demo_1.fastq demo/demo_2.fastq demo</code></pre>
 
+    The output files for the next step are fasta file of pileups before filter: `dome_pileup_dep0.fasta` 
+   and tab delimited .txt files: `dome_pileup_dep0_F.pos.txt` and `demo_pileup_dep0_R.pos.txt`. The columnns are:
+   
+    scaffold id, chromosome position of pileup, coverage, pileup depth, depth to coverage ratio, sequence (6 flank nt)
+   
+   3\) identify conserved motifs using MEME-suit. Input file `dome_pileup_dep0.fasta`. Output: meme/dome_pileup_dep0.txt`
+   
+   <pre><code>sh meme.sh</code></pre>
+
+   4\) merge pileup sites.
+
+   <pre><code>sh mergepileup.sh</code></pre>
+
+   The output file is a tab delimited txt file with columns: scaffold, genome position, coverage, depth of read 2, depth-to-coverage ratio, sequence with 6-nt flanking, strand, motif.
+
+   5\) calculate the number of pileups.
+   
+   <pre><code>sh motif_stat.sh</code></pre>
+
+   The output file is a txt file with motifs such as, CAG, CCA, GATC/GATC, GAAC/GTTC, and corresponding number of modified motif sites.
+
+   6\) Summarize the number of pileups per gene class.
+   
+   <pre><code>sh pileup_to_gffClass.sh</code></pre>
+   
+   <pre><code>sh summary_geneClass.sh</code></pre>
+   The output file is a table of gene class (CDS, rRNA, tRNA) and corresponding number of total motif sites and modified motif sites.
 
 ## Contributors
 Yifeng Yuan, Ph.D.  yuanyifeng@mit.edu  
