@@ -1,8 +1,8 @@
 #!/bin/bash
 
 job=$1
-ratio=$2
-depth=$3
+depth=$2
+ratio=$3
 
 folder=${job}_top200_R2/vcf_per_OTU
 
