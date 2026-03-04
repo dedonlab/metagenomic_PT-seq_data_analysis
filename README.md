@@ -48,6 +48,8 @@ lzma v4.32.7 https://sourceforge.net/projects/lzma/
 ### 1. Trim reads  
 RAM >= 50G is required. For real PT-seq dataset, we recommond thread >= 10.  
 ```
+# Ensure bbmap and fastqc added to your system’s PATH so that it can be invoked from the command line.  
+
 sh trim.sh demo/demo_1.fastq demo/demo_2.fastq job_demo  
 ```  
 The output files for the next step are trimmed reads: `job_demo_R1_final.fastq` and `job_demo_R2_final.fastq`. The output files also include intermediate .fq files and QC report files.
@@ -55,12 +57,13 @@ The output files for the next step are trimmed reads: `job_demo_R1_final.fastq` 
 ### 2. Prepare reference genome using UHGG2 and Kraken2-Bracken  
 Map reads to UHGG2 genomes to estimate the composition of the gut microbiome. Either PT-seq reads or metagenomic sequencing reads can be used (pipeline 1 and pipeline 2 in the manuscript). Download the UHGG2 Kraken2 and Bracken database (e.g. database150mers.kmer_distrib) from https://www.ebi.ac.uk/metagenomics/genome-catalogues/human-gut-v2-0-2. Put the 'myDB' in the work/UHGG2 folder.  
 ```
-# 1. kraken2
+# 1. Kraken2
+# Ensure Kraken2 and Bracken  added to your system’s PATH so that it can be invoked from the command line.  
 mydb= path to myDB, e.g. work/UHGG2/myDB  
-dir_w= work directory, e.g. work
+dir_w= work directory, e.g. work  
 
-# Threads >=8 is recommended.  
-t=number of threads
+# Threads >=8 is recommended.   
+t=number of threads  
 
 k_report=work/UHGG2/demo_kraken.report  
 k_file=work/UHGG2/demo_kraken.kraken  
@@ -95,38 +98,89 @@ A demo 'demo_mapper_top200_R12.sh' and 'demo_mapper_top200_R2.sh' are provided i
 
 ```
 # RAM >= 100G is required. Threads >= 10 is recommended.
+# Ensure mapper added to your system’s PATH so that it can be invoked from the command line.  
 threads= number of threads
 
 read1=work/demo/demo_R1_final.fastq  
 read2=work/demo/demo_R2_final.fastq
 
 dir_m=demo_top200_R12 # path to output  
-sh demo_mapper_top200_R12.sh $read1 $read2 ${dir_m} ${threads}
+sh demo_mapper_top200_R12.sh $read1 $read2 ${dir_m} ${threads}  
 
 dir_m=demo_top200_R2 # path to output  
-sh demo_mapper_top200_R2.sh $read1 $read2 ${dir_m} ${threads}
+sh demo_mapper_top200_R2.sh $read1 $read2 ${dir_m} ${threads}  
 ```
 
 Output: demo_top200_R12/top200.vcf and demo_top200_R2/top200.vcf.
 
 ### 4. Convert vcf files to read pileups  
 ```
-# 1. split vcf for each reference genome
-sh splitvcf_bygenome.sh demo_top200_R12/top200.vcf
-sh splitvcf_bygenome.sh demo_top200_R2/top200.vcf
+# 1. split vcf for each reference genome  
+sh splitvcf_bygenome.sh demo_top200_R12/top200.vcf  
+sh splitvcf_bygenome.sh demo_top200_R2/top200.vcf  
 
-# Output: demo_top200_R12/vcf_per_OTU and demo_top200_R2/vcf_per_OTU
+# Output: demo_top200_R12/vcf_per_OTU and demo_top200_R2/vcf_per_OTU  
 
-# 2. convert vcf to pileups
-sh vcf2plup.sh demo_top200_R12/vcf_per_OTU
-sh vcf2plup.sh demo_top200_R2/vcf_per_OTU
+# 2. convert vcf to pileups  
+sh vcf2plup.sh demo_top200_R12/vcf_per_OTU  
+sh vcf2plup.sh demo_top200_R2/vcf_per_OTU  
 
-# Output: demo_top200_R12/vcf_per_OTU/*_R.txt and demo_top200_R12/vcf_per_OTU/*_F.txt. Column 1: chr; column 2: position; column 3: coverage.
+# Output: demo_top200_R12/vcf_per_OTU/*_R.txt and demo_top200_R12/vcf_per_OTU/*_F.txt.  
+# F: - strand; R: + strand.  
+# Column 1: chr; column 2: position; column 3: coverage; column4: read pileup depth.  
 
+# 3. keep pileups in R2 only
+sh plup_keepR2.sh demo_top200_R12/vcf_per_OTU demo_top200_R2/vcf_per_OTU
+
+# Output: demo_top200_R12/vcf_per_OTU/*_F_set.txt and *_R_set.txt.  
+# F: - strand; R: + strand.  
+# Column 1: chr; column 2: position; column 3: coverage; column4: read pileup depth.
+
+# 4. retrieve sequences of pileups
+# Ensure samtools added to your system’s PATH so that it can be invoked from the command line.  
+# flank= number of flanking nts. 2n+1 nts will be retrieved. For example  
+flank=5
+
+# for + strand  
+sh plup2seq_R.sh pl1_M1_top200_R2/vcf_per_OTU vcf ${flank}  
+
+# for - strand, reverse complementary sequences will be retrieved.  
+sh plup2seq_R.sh pl1_M1_top200_R2/vcf_per_OTU vcf ${flank}
 
 ```
 
+### 5. Motif detection using MEME-suite  
 
+```
+# Ensure meme and seqkit added to your system’s PATH so that it can be invoked from the command line.
+# job = jobname. e.g. demo.
+# d = The minimal depth of read pileups. The larger depth, the more specificity and less sensitivity. 0.5-3 is good range for both specificity and sensitivity for motif detection.  
+# r = The minimal ratio of read pileup depth to coverage. The larger ratio, the more specificity and less sensitivity. 0.1-0.5 is good range for both specificity and sensitivity for motif detection.  
+# t= number of threads. t>=2 is recommended.
+
+job=demo  
+r=0.1
+d=1
+t=4
+
+sh seq2fasta.sh ${job} ${d} ${r} 
+
+Output: demo_top200_R2/vcf_per_OTU/*_dep${depth}r${ratio}min8.fasta
+
+sh meme.sh ${job} ${d} ${r} ${t}
+
+Output: demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.txt and demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.html. For details of output files, see the instruction of meme-suite.
+
+# summarize meme results
+
+sh summary_meme.sh ${job} ${d} ${r}
+
+Output: Depending on the criteria, such as numbers of sites and E-value, motifs can be called per reference genome by the users.
+```
+
+
+
+### 6. Motif detection usin
 
 ## Contributors
 Yifeng Yuan, Ph.D.  yuanyifeng@mit.edu  
