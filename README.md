@@ -175,7 +175,7 @@ Output: demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.txt and demo_top200_R2/mem
 
 sh summary_meme.sh ${job} ${d} ${r}
 
-Output: Depending on the criteria, such as numbers of sites and E-value, motifs can be called per reference genome by the users.
+Output: meme_${job}_dep${dep}r${ratio}_summary.txt. Depending on the criteria, such as numbers of sites and E-value, motifs then can be called per reference genome by the users.
 ```
 
 
