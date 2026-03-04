@@ -85,11 +85,11 @@ Output: work/UHGG2/demo.bracken is the table of estimated abundance of UHGG2 gen
 
 ### 3. Align PTseq reads to the reference genomes  
 We used the most abundant 200 genomes estimated by Kraken2-Bracken as the reference genomes of the gut microbiome for the sample.  
-Retrieve the most abundant 200 genomes (fna files) from https://www.ebi.ac.uk/metagenomics/genome-catalogues/human-gut-v2-0-2 put them in the folder work/demo/fna_200clean. 
+Retrieve the most abundant 200 genomes (fna files) from https://www.ebi.ac.uk/metagenomics/genome-catalogues/human-gut-v2-0-2. Put them in the folder work/demo/fna_200clean. 
 For demo, the compressed reference genomes are provided at https://doi.org/10.6084/m9.figshare.31476859. Extract and put the 'fna_200clean' folder in the work/demo directory.  
 
-Prepare scripts for mapper, 'mapper_brackentop200_R12.sh' and 'mapper_brackentop200_R2.sh' as required https://github.com/mathjeff/mapper
-'mapper_brackentop200_R12.sh' is used to align read 1 and 2, whereas 'mapper_brackentop200_R2.sh' is used to align read 2 only.
+Prepare mapper scripts, 'mapper_brackentop200_R12.sh' and 'mapper_brackentop200_R2.sh', following the instruction https://github.com/mathjeff/mapper.  
+'mapper_brackentop200_R12.sh' is used to align read 1 and 2, and 'mapper_brackentop200_R2.sh' is used to align read 2 only.
 
 A demo 'demo_mapper_top200_R12.sh' and 'demo_mapper_top200_R2.sh' are provided in the repository.  
 
@@ -112,8 +112,17 @@ Output: demo_top200_R12/top200.vcf and demo_top200_R2/top200.vcf.
 ### 4. Convert vcf files to read pileups  
 ```
 # 1. split vcf for each reference genome
-splitvcf_bygenome.sh demo_top200_R12/top200.vcf
-splitvcf_bygenome.sh demo_top200_R2/top200.vcf  
+sh splitvcf_bygenome.sh demo_top200_R12/top200.vcf
+sh splitvcf_bygenome.sh demo_top200_R2/top200.vcf
+
+# Output: demo_top200_R12/vcf_per_OTU and demo_top200_R2/vcf_per_OTU
+
+# 2. convert vcf to pileups
+sh vcf2plup.sh demo_top200_R12/vcf_per_OTU
+sh vcf2plup.sh demo_top200_R2/vcf_per_OTU
+
+# Output: demo_top200_R12/vcf_per_OTU/*_R.txt and demo_top200_R12/vcf_per_OTU/*_F.txt. Column 1: chr; column 2: position; column 3: coverage.
+
 
 ```
 
