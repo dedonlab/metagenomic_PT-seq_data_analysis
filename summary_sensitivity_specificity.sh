@@ -1,4 +1,5 @@
 #!/bin/bash
+list=$1
 
 for ratio in $(seq 0.1 0.1 1) ; do
   for pipeline in 1 2; do
@@ -18,7 +19,7 @@ for ratio in $(seq 0.1 0.1 1) ; do
       echo -e "\t${num_motif}\c" >> ${output}
     done
     echo "" >> ${output}
-  done < list_genome_motif.txt
+  done < ${list}
 done
 
 for ratio in $(seq 0.1 0.1 1) ; do
@@ -39,7 +40,7 @@ for ratio in $(seq 0.1 0.1 1) ; do
       echo -e "\t${num_motif}\c" >> ${output}
     done
     echo "" >> ${output}
-  done < list_genome_motif.txt
+  done < ${list}
 done
 
 ####
