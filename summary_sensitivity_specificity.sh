@@ -2,12 +2,8 @@
 list=$1
 
 for ratio in $(seq 0.1 0.1 1) ; do
-  for pipeline in 1 2; do
-    for method in 1 2 3 4 ; do
-      output=allsite_${job}_r${ratio}_depth.txt
-      > ${output}
-    done
-  done
+  output=allsite_${job}_r${ratio}_depth.txt
+  > ${output}
 done
 
 for ratio in $(seq 0.1 0.1 1) ; do
@@ -23,12 +19,8 @@ for ratio in $(seq 0.1 0.1 1) ; do
 done
 
 for ratio in $(seq 0.1 0.1 1) ; do
-  for pipeline in 1 2; do
-    for method in 1 2 3 4 ; do
-      output=ptsite_${job}_r${ratio}_depth.txt
-      > ${output}
-    done
-  done
+  output=ptsite_${job}_r${ratio}_depth.txt
+  > ${output}
 done
 
 for ratio in $(seq 0.1 0.1 1) ; do
