@@ -54,6 +54,9 @@ sh trim.sh demo/demo_1.fastq demo/demo_2.fastq job_demo
 ```  
 The output files for the next step are trimmed reads: `job_demo_R1_final.fastq` and `job_demo_R2_final.fastq`. The output files also include intermediate .fq files and QC report files.
 
+### For single genome PTseq data analysis, see instructions at https://github.com/dedonlab/PTseq_data_analysis  
+Briefly, Bowtie2 is used for read aligment instead of mapper.
+
 ### 2. Prepare reference genome using UHGG2 and Kraken2-Bracken  
 Map reads to UHGG2 genomes to estimate the composition of the gut microbiome. Either PT-seq reads or metagenomic sequencing reads can be used (pipeline 1 and pipeline 2 in the manuscript). Download the UHGG2 Kraken2 and Bracken database (e.g. database150mers.kmer_distrib) from https://www.ebi.ac.uk/metagenomics/genome-catalogues/human-gut-v2-0-2. Put the 'myDB' in the work/UHGG2 folder.  
 ```
