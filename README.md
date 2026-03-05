@@ -180,10 +180,10 @@ sh summary_meme.sh ${job} ${d} ${r}
 ```
 
 Depending on the numbers of sites and E-value, motifs and PT-containing genomes then can be called per reference genome by the users. In the manuscript, we used a cut of E-value of 0.05 and a cutoff of the numbers of sites of 200.  
-Output: list_genome_motif.txt. A tab delimited txt file of PT-containing genomes. The 1st column is genome ID. The 2nd column is job name. The 3rd column are space delimited motifs. For example:
-MGYG000000562	demo	GAAC GTTC
-MGYG000001302.1	demo	CAG CCA
-MGYG000001346	1	demo CAG
+Output: list_genome_motif.txt. A tab delimited txt file of PT-containing genomes. The 1st column is genome ID. The 2nd column is job name. The 3rd column are space delimited motifs. For example:  
+MGYG000000562	demo	GAAC GTTC  
+MGYG000001302.1	demo	CAG CCA  
+MGYG000001346	1	demo CAG  
 
 ### 6. Locate and merge PT sites  
 Errors in library preparation, sequencing, trimming, and so on can cause shift of the read 2 of a read. As a result, we merged 3 consecutive pileups to the one with the large read depth.
