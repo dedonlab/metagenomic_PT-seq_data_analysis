@@ -181,9 +181,11 @@ sh summary_meme.sh ${job} ${d} ${r}
 
 Depending on the numbers of sites and E-value, motifs and PT-containing genomes then can be called per reference genome by the users. In the manuscript, we used a cut of E-value of 0.05 and a cutoff of the numbers of sites of 200.  
 Output: list_genome_motif.txt. A tab delimited txt file of PT-containing genomes. The 1st column is genome ID. The 2nd column is job name. The 3rd column are space delimited motifs. For example:  
+```
 MGYG000000562	demo	GAAC GTTC  
 MGYG000001302.1	demo	CAG CCA  
 MGYG000001346	1	demo CAG  
+```
 
 ### 6. Locate and merge PT sites  
 Errors in library preparation, sequencing, trimming, and so on can cause shift of the read 2 of a read. As a result, we merged 3 consecutive pileups to the one with the large read depth.
@@ -195,6 +197,7 @@ sh assign_motif2seq_merge.sh list_genome_motif.txt ${demo}
 
 ```
 Intermediate files: "${job}"_top200_R2/site/${genome}_R_seq_motif_merge.txt and "${job}"_top200_R2/site/${genome}_F_seq_motif_merge.txt. Merged pileups in +/- strand, respectively.  
+
 Output: "${job}"_top200_R2/site/${genome}_allsite.txt  
 Column 1: genome ID.  
 Column 2: the start position of the sequence.  
@@ -207,11 +210,29 @@ Column 8: the position of pt in the genome.
 Column 9: strand.
 
 ### 7. Summarize and report the profile of PT sites depending on the depth and depth-to-coverage ratio  
-The cutoff of the depth of read pileups and the cutoff of pileup-depth-to-coverage ratio determine the specificity and sensitivity of PT site detection. The larger depth and ratio, the more specificity and less sensitivity. Therefore, we summarize the number of PT sites and the specificity of PT sites/total pileup sites for a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.
+The cutoff of the depth of read pileups and the cutoff of pileup-depth-to-coverage ratio determine the specificity and sensitivity of PT site detection. The larger depth and ratio, the more specificity and less sensitivity. Therefore, we summarize the number of PT sites and the specificity of PT sites/total pileup sites in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.
 
 ```
+list=list_genome_motif.txt 
+sh summary_sensitivity_specificity.sh ${list}
+
+# calculate the number of PT sites per 1000,000 nts per 1000,000 reads  
+#read_num=the number of reads  
+#total_nts=the number of nts of the metagenome calculated based on the abundance of each genome multiplying the size of each genome from Kraken2-Bracken
+
+total_nts=6587876
+read_num=4700797  
+job=demo  # job name
+sh normalize_nts_reads.sh ${job} ${total_nts} ${read_num}
 
 ```
+Intermediate files:  
+allsite_${job}_r${ratio}_depth.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.  
+ptsite_${job}_r${ratio}_depth.txt. The number of PT sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.  
+
+Output:  
+allsite_${job}_r${ratio}_depth_normalized.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.  
+ptsite_${job}_r${ratio}_depth_normalized.txt. The number of PT sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.
 
 ## Contributors
 Yifeng Yuan, Ph.D.  yuanyifeng@mit.edu  
