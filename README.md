@@ -195,8 +195,16 @@ sh assign_motif2seq_merge.sh list_genome_motif.txt ${demo}
 
 ```
 Intermediate files: "${job}"_top200_R2/site/${genome}_R_seq_motif_merge.txt and "${job}"_top200_R2/site/${genome}_F_seq_motif_merge.txt. Merged pileups in +/- strand, respectively.  
-Output: "${job}"_top200_R2/site/${genome}_allsite.txt
-**Column 1 is genome ID. Column 2 is the start position of the sequence. Column 3 is coverage. Column 4 is read pileup depth. Column 5 is sequence. Column 6 is motif. Column 7 is postion of pt in the sequence. Column 8 is the position of pt in the genome. Column 9 is strand.**
+Output: "${job}"_top200_R2/site/${genome}_allsite.txt  
+Column 1: genome ID.  
+Column 2: the start position of the sequence.  
+Column 3: coverage.  
+Column 4: read pileup depth.  
+Column 5: sequence.  
+Column 6: motif.  
+Column 7: postion of pt in the sequence.  
+Column 8: the position of pt in the genome.  
+Column 9: strand.
 
 ### 7. Summarize and report the profile of PT sites depending on the depth and depth-to-coverage ratio  
 The cutoff of the depth of read pileups and the cutoff of pileup-depth-to-coverage ratio determine the specificity and sensitivity of PT site detection. The larger depth and ratio, the more specificity and less sensitivity. Therefore, we summarize the number of PT sites and the specificity of PT sites/total pileup sites for a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.
