@@ -12,8 +12,8 @@ while IFS=$'\t' read -r genome job motif; do
   read -ra motif_array <<< "$motif"
 
   # Optional: Print what was received
-  echo "pipeline: $pipeline"
   echo "job: $job"
+  echo "genome: $genome"
   echo "Motifs: ${motif_array[*]}"
 
   # Call your actual processing script with:
