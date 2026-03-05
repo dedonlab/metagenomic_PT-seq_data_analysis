@@ -194,7 +194,6 @@ Errors in library preparation, sequencing, trimming, and so on can cause shift o
 list=list_genome_motif.txt
 
 sh assign_motif2seq_merge.sh list_genome_motif.txt ${list}
-
 ```
 Intermediate files: "${job}"_top200_R2/site/${genome}_R_seq_motif_merge.txt and "${job}"_top200_R2/site/${genome}_F_seq_motif_merge.txt. Merged pileups in +/- strand, respectively.  
 
@@ -224,8 +223,8 @@ sh summary_sensitivity_specificity.sh ${list}
 total_nts=6587876
 read_num=4700797  
 job=demo  # job name
-sh normalize_nts_reads.sh ${job} ${total_nts} ${read_num}
 
+sh normalize_nts_reads.sh ${job} ${total_nts} ${read_num}
 ```
 Intermediate files:  
 allsite_${job}_r${ratio}_depth.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.  
@@ -233,7 +232,8 @@ ptsite_${job}_r${ratio}_depth.txt. The number of PT sites per genome per 1M nts 
 
 Output:  
 allsite_${job}_r${ratio}_depth_normalized.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.  
-ptsite_${job}_r${ratio}_depth_normalized.txt. The number of PT sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.
+ptsite_${job}_r${ratio}_depth_normalized.txt. The number of PT sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.  
+
 
 ## Contributors
 Yifeng Yuan, Ph.D.  yuanyifeng@mit.edu  
