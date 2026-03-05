@@ -3,43 +3,12 @@ import argparse
 import pandas as pd
 import textwrap
 
-def process_table(input_file, output_file, pipeline, method):
-    # Validate Pipeline/Method constraints
-    if pipeline not in ["1", "2"]:
-        print("Error: Pipeline must be 1 or 2.")
-        sys.exit(1)
-    
-    if method not in ["1", "2", "3", "4"]:
-        print("Error: Method must be 1, 2, 3, or 4.")
-        sys.exit(1)
+def process_table(input_file, output_file, arg_nts, arg_reads):
 
     # Define constants based on method.
     multiplier = 1000000000000
-    
-    if pipeline =="1" and method == "1":
-        normalized_nts = 6587876.446
-        total_reads = 5131334
-    elif pipeline =="1" and method == "2":
-        normalized_nts = 6587876.446
-        total_reads = 6784507
-    elif pipeline =="1" and method == "3":
-        normalized_nts = 6587876.446
-        total_reads = 4625575
-    elif pipeline =="1" and method == "4":
-        normalized_nts = 6587876.446
-        total_reads = 4700797
-    elif pipeline =="2" and method == "1":
-        normalized_nts = 6814152.646
-        total_reads = 5131334
-    elif pipeline =="2" and method == "2":
-        normalized_nts = 6628200.063
-        total_reads = 6784507
-    elif pipeline =="2" and method == "3":
-        normalized_nts = 6889369.502
-        total_reads = 4625575
-    elif pipeline =="2" and method == "4":
-        normalized_nts = 6968763.094
-        total_reads = 4700797
+    normalized_nts = float(arg_nts)
+    total_reads = float(arg_reads)
 
     try:
         # 1. read input.
@@ -113,24 +82,20 @@ def main():
     )
     
     parser.add_argument(
-        "--pipeline",
-        choices=["1", "2"],
-        help="Pipeline '1' '2' is supported)"
+        "--nts",
+        help="int/float.the number of nts of the metagenome calculated based on the abundance of each genome multiplying the size of each genome from Kraken2-Bracken"
     )
     
     parser.add_argument(
-        "--method",
-        choices=["1", "2", "3", "4"],
-        help=textwrap.dedent("""\
-            Method must be in '1', '2', '3', and '4'.
-        """)
+        "--reads",
+        help="int/float.the number of reads"
     )
     
     # Parse arguments
     args = parser.parse_args()
     
     # Execute logic
-    process_table(args.input, args.output, args.pipeline, args.method)
+    process_table(args.input, args.output, args.nts, args.reads)
 
 if __name__ == "__main__":
     # Import textwrap here to avoid issues if used inside the function definition above
