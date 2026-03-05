@@ -163,24 +163,47 @@ r=0.1
 d=1
 t=4
 
-sh seq2fasta.sh ${job} ${d} ${r} 
+sh seq2fasta.sh ${job} ${d} ${r}  
 
-# Output: demo_top200_R2/vcf_per_OTU/*_dep${depth}r${ratio}min8.fasta
+# Output: demo_top200_R2/vcf_per_OTU/*_dep${depth}r${ratio}min8.fasta  
 
-sh meme.sh ${job} ${d} ${r} ${t}
+sh meme.sh ${job} ${d} ${r} ${t}  
 
-# Output: demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.txt and demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.html. For details of output files, see the instruction of meme-suite.
+# Output: demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.txt and demo_top200_R2/meme_dep${dep}r${ratio}/*_meme.html.  
+# For details of output files, see the instruction of meme-suite.  
 
-# summarize meme results
+# summarize meme results  
 
-sh summary_meme.sh ${job} ${d} ${r}
+sh summary_meme.sh ${job} ${d} ${r}  
 
-# Output: meme_${job}_dep${dep}r${ratio}_summary.txt. Depending on the criteria, such as numbers of sites and E-value, motifs then can be called per reference genome by the users.
+# Output: meme_${job}_dep${dep}r${ratio}_summary.txt.
 ```
 
+Depending on the numbers of sites and E-value, motifs and PT-containing genomes then can be called per reference genome by the users. In the manuscript, we used a cut of E-value of 0.05 and a cutoff of the numbers of sites of 200.  
+Output: list_genome_motif.txt. A tab delimited txt file of PT-containing genomes. The 1st column is genome ID. The 2nd column is job name. The 3rd column are space delimited motifs. For example:
+MGYG000000562	demo	GAAC GTTC
+MGYG000001302.1	demo	CAG CCA
+MGYG000001346	1	demo CAG
 
+### 6. Locate and merge PT sites  
+Errors in library preparation, sequencing, trimming, and so on can cause shift of the read 2 of a read. As a result, we merged 3 consecutive pileups to the one with the large read depth.
 
-### 6. Motif detection usin
+```
+job=demo  # job name
+
+sh assign_motif2seq_merge.sh list_genome_motif.txt ${demo}
+
+```
+Intermediate files: "${job}"_top200_R2/site/${genome}_R_seq_motif_merge.txt and "${job}"_top200_R2/site/${genome}_F_seq_motif_merge.txt. Merged pileups in +/- strand, respectively.  
+Output: "${job}"_top200_R2/site/${genome}_allsite.txt
+**Column 1 is genome ID. Column 2 is the start position of the sequence. Column 3 is coverage. Column 4 is read pileup depth. Column 5 is sequence. Column 6 is motif. Column 7 is postion of pt in the sequence. Column 8 is the position of pt in the genome. Column 9 is strand.**
+
+### 7. Summarize and report the profile of PT sites depending on the depth and depth-to-coverage ratio  
+The cutoff of the depth of read pileups and the cutoff of pileup-depth-to-coverage ratio determine the specificity and sensitivity of PT site detection. The larger depth and ratio, the more specificity and less sensitivity. Therefore, we summarize the number of PT sites and the specificity of PT sites/total pileup sites for a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.
+
+```
+
+```
 
 ## Contributors
 Yifeng Yuan, Ph.D.  yuanyifeng@mit.edu  
