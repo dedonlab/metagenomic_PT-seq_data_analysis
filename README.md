@@ -184,7 +184,7 @@ Output: list_genome_motif.txt. A tab delimited txt file of PT-containing genomes
 ```
 MGYG000000562	demo	GAAC GTTC  
 MGYG000001302.1	demo	CAG CCA  
-MGYG000001346	demo CAG  
+MGYG000001346  demo  CAG  
 ```
 
 ### 6. Locate and merge PT sites  
