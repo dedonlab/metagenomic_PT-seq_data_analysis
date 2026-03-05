@@ -184,16 +184,16 @@ Output: list_genome_motif.txt. A tab delimited txt file of PT-containing genomes
 ```
 MGYG000000562	demo	GAAC GTTC  
 MGYG000001302.1	demo	CAG CCA  
-MGYG000001346	1	demo CAG  
+MGYG000001346	demo CAG  
 ```
 
 ### 6. Locate and merge PT sites  
 Errors in library preparation, sequencing, trimming, and so on can cause shift of the read 2 of a read. As a result, we merged 3 consecutive pileups to the one with the large read depth.
 
 ```
-job=demo  # job name
+list=list_genome_motif.txt
 
-sh assign_motif2seq_merge.sh list_genome_motif.txt ${demo}
+sh assign_motif2seq_merge.sh list_genome_motif.txt ${list}
 
 ```
 Intermediate files: "${job}"_top200_R2/site/${genome}_R_seq_motif_merge.txt and "${job}"_top200_R2/site/${genome}_F_seq_motif_merge.txt. Merged pileups in +/- strand, respectively.  
@@ -213,7 +213,8 @@ Column 9: strand.
 The cutoff of the depth of read pileups and the cutoff of pileup-depth-to-coverage ratio determine the specificity and sensitivity of PT site detection. The larger depth and ratio, the more specificity and less sensitivity. Therefore, we summarize the number of PT sites and the specificity of PT sites/total pileup sites in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.
 
 ```
-list=list_genome_motif.txt 
+list=list_genome_motif.txt
+
 sh summary_sensitivity_specificity.sh ${list}
 
 # calculate the number of PT sites per 1000,000 nts per 1000,000 reads  
