@@ -230,13 +230,22 @@ job=demo  # job name
 sh normalize_nts_reads.sh ${job} ${total_nts} ${read_num}
 ```
 Intermediate files:  
-allsite_${job}_r${ratio}_depth.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.  
-ptsite_${job}_r${ratio}_depth.txt. The number of PT sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.  
+allsite\_${job}\_r${ratio}\_depth.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.  
+ptsite\_${job}\_r${ratio}\_depth.txt. The number of PT sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0.  
 
 Output:  
-allsite_${job}_r${ratio}_depth_normalized.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.  
+allsite\_${job}\_r${ratio}\_depth_normalized.txt. The number of all sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.  
 ptsite_${job}_r${ratio}_depth_normalized.txt. The number of PT sites per genome per 1M nts per 1M reads in a range of depth from 1 to 50 and a range of depth-to-coverage ratio from 0.1 to 1.0. The last row is the sum of sites of all genomes.  
 
+### 8. Calculate the euclidean distance     
+Compare the relative proportions of each observed (C\*A, C\*C, and G\*A) against the LC-MS/MS detection (8:22:12). We first normalize the numbers (so they sum to 1) and calculate the Euclidean Distance.   
+Save the number of C\*A, C\*C, and G\*A dinucleotides as a 3-column tab-delimited txt file without row and column index.  
+
+```
+job= job name
+
+python euclidean_distance.py ${job}__dint.txt
+```
 
 ## Contributors
 Yifeng Yuan, Ph.D.  yuanyifeng@mit.edu  
