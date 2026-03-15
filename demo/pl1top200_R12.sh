@@ -1,15 +1,8 @@
 #!/bin/bash
-#SBATCH -N 1                       # Number of nodes. You must always set -N 1 unless you receive special instruction from the system admin
-#SBATCH -n 12                       # Number of tasks. Don't specify more than 16 unless approved by the system admin
-#SBATCH --mail-type=END            # Type of email notification- BEGIN,END,FAIL,ALL. Equivalent to the -m option in SGE
-#SBATCH --mail-user=yuanyifeng@ufl.edu # Email to which notifications will be sent. Equivalent to the -M option in SGE. You must replace [] with your email address.
-#SBATCH -t 5-00:00:00
-#SBATCH --mem=100GB
-#############################################
 
-r1=$1
-r2=$2
-dir_o=$3
+r1=D5M4_R1_final.fastq
+r2=D5M4_R1_final.fastq
+dir_o=work_dir
 sample=top200
 t=12
 mkdir ${dir_o} || true
